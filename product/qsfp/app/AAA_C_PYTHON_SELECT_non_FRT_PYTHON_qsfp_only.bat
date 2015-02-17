@@ -1,4 +1,5 @@
 @echo off
+REM This line was added to change this batch file so as to test GIT
     REM Created by Steve Lin to select a Python script in Current directory
     REM set new environment variables, the tmp file is in temp directory
 
