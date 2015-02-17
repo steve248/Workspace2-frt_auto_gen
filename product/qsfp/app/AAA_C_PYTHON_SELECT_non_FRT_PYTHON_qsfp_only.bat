@@ -47,6 +47,13 @@ REM OLDREM     )
 
 :ALREADY_SET_C_PYTHON_ENV
 
+    REM show the Python scripts and their function for selection
+    echo "doc_to_csv_table_qsfp.py". Step 1: Create table from this reversion
+    echo "csv_table_to_memory_test_qsfp.py" Step 2: Create Memory test script
+    echo "csv_table_to_io_test_qsfp.py" Step 3: Create IO test script
+    echo "csv_table_to_timing_test_qsfp.py" Step 4: Create Timing test script
+
+
     set outfile=%TMP%\xxx_batchfilexx.junk
 
     REM Find all python script in this directory, non-recursively, and newest file is last
@@ -92,29 +99,45 @@ REM OLDREM     )
     echo.
 
 
-REM @echo on
     echo.
     REM echo. Executing "ipy  %this_python_script%"...
     echo. Executing "python  %this_python_script%...
     echo.
 
+    REM Select MSA version to be used
+    set msa_file_name=SFF-8636 rev23 QSFP Managemente Interface from docx
     set msa_file_name=SFF-8636 rev23 QSFP Managemente Interface from docx
 
     if "%this_python_script%"=="doc_to_csv_table_qsfp.py" (
-        set input_file="C:\Workspace2\frt_auto_gen\msa_and_memory_map\QSFP\%msa_file_name%.txt" 
+        REM Step 1: Create table from this reversion
+
+        REM set input_file="C:\Workspace2\frt_auto_gen\msa_and_memory_map\QSFP\%msa_file_name%.txt" 
+        set  input_file="C:\Workspace2\frt_auto_gen\product\qsfp\app_input\%msa_file_name%.txt" 
         set output_file="C:\Workspace2\frt_auto_gen\product\qsfp\app_output\csv"
     ) ELSE (
         IF "%this_python_script%"=="csv_table_to_memory_test_qsfp.py" (
+            REM Step 2: Create Memory test script
+
             set input_file="C:\Workspace2\frt_auto_gen\product\qsfp\app_output\csv\%msa_file_name%_all_table.csv"
             set output_file="C:\Workspace2\frt_auto_gen\product\qsfp\memory"
 
         ) ELSE (
             IF "%this_python_script%"=="csv_table_to_io_test_qsfp.py" (
+                REM Step 3: Create IO test script
+
                 set input_file="C:\Workspace2\frt_auto_gen\product\qsfp\app_output\csv\%msa_file_name%_all_table.csv"
                 set output_file="C:\Workspace2\frt_auto_gen\product\qsfp\io"
             ) ELSE (
-                echo The variable not contains "csv_table_to_memory_test_qsfp"
-                echo The variable not contains "%this_python_script%"
+                IF "%this_python_script%"=="csv_table_to_timing_test_qsfp.py" (
+                    REM echo "csv_table_to_timing_test_qsfp.py" Step 4: Create Timing test script
+
+                    REM use SFF-8679 instead of SFF-8636
+                    set  input_file="C:\Workspace2\frt_auto_gen\product\qsfp\app_input\%msa_file_name%.txt" 
+                    set output_file="C:\Workspace2\frt_auto_gen\product\qsfp\app_output\csv"
+                ) ELSE (
+                    echo The variable not contains "csv_table_to_memory_test_qsfp"
+                    echo The variable not contains "%this_python_script%"
+                )
             )
         )
     )
